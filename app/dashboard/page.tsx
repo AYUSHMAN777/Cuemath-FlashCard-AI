@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
-import Link from "next/link";
 
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { DashboardClient, type DashboardDeck, type DashboardStats } from "@/components/dashboard/dashboard-client";
 
 export default async function DashboardPage() {
   const { userId } = await auth();
@@ -21,21 +21,67 @@ export default async function DashboardPage() {
     return <div className="p-6">Failed to load decks.</div>;
   }
 
-  return (
-    <div className="p-6">
-      <h1 className="text-xl font-bold mb-4">Your Decks</h1>
+  const safeDecks: DashboardDeck[] = (decks ?? []).map((d) => ({
+    id: d.id,
+    title: d.title,
+    totalCards: 0,
+    dueCards: 0,
+  }));
+  const deckIds = safeDecks.map((d) => d.id);
 
-      {decks && decks.length > 0 ? (
-        decks.map((deck) => (
-          <Link key={deck.id} href={`/practice/${deck.id}`}>
-            <div className="border p-4 mb-2 rounded cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-900">
-              {deck.title}
-            </div>
-          </Link>
-        ))
-      ) : (
-        <p className="text-sm text-gray-500">No decks yet.</p>
-      )}
-    </div>
-  );
+  const todayISO = new Date().toISOString().slice(0, 10);
+  const endOfTodayISO = `${todayISO}T23:59:59.999Z`;
+
+  const [{ count: totalCards }, { count: dueToday }, { data: cardRows }] = await Promise.all([
+    deckIds.length
+      ? supabase
+          .from("flashcards")
+          .select("id", { count: "exact", head: true })
+          .in("deck_id", deckIds)
+      : Promise.resolve({ count: 0 }),
+    deckIds.length
+      ? supabase
+          .from("flashcards")
+          .select("id", { count: "exact", head: true })
+          .in("deck_id", deckIds)
+          .lte("next_review", endOfTodayISO)
+      : Promise.resolve({ count: 0 }),
+    deckIds.length
+      ? supabase
+          .from("flashcards")
+          .select("deck_id, next_review")
+          .in("deck_id", deckIds)
+      : Promise.resolve({ data: [] }),
+  ]);
+
+  const metrics = new Map<string, { totalCards: number; dueCards: number }>();
+  for (const deck of safeDecks) {
+    metrics.set(deck.id, { totalCards: 0, dueCards: 0 });
+  }
+
+  for (const card of cardRows ?? []) {
+    const entry = metrics.get(card.deck_id);
+    if (!entry) continue;
+    entry.totalCards += 1;
+    if (card.next_review && card.next_review <= endOfTodayISO) {
+      entry.dueCards += 1;
+    }
+  }
+
+  const enrichedDecks: DashboardDeck[] = safeDecks.map((deck) => {
+    const meta = metrics.get(deck.id);
+    return {
+      ...deck,
+      totalCards: meta?.totalCards ?? 0,
+      dueCards: meta?.dueCards ?? 0,
+    };
+  });
+
+  const stats: DashboardStats = {
+    totalDecks: enrichedDecks.length,
+    totalCards: totalCards ?? 0,
+    dueToday: dueToday ?? 0,
+  };
+
+  return <DashboardClient stats={stats} decks={enrichedDecks} />;
 }

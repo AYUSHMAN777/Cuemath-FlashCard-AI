@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 type FlipFlashcardProps = {
   question: string;
@@ -25,25 +26,26 @@ export default function FlipFlashcard({
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto perspective">
-      <div
+    <div className="mx-auto w-full max-w-2xl [perspective:1600px]">
+      <motion.div
         onClick={toggle}
-        className={`relative w-full h-64 cursor-pointer transition-transform duration-500 transform ${
-          isFlipped ? "rotate-y-180" : ""
-        }`}
+        className="relative h-[24rem] w-full cursor-pointer"
+        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        transition={{ duration: 0.55, ease: "easeInOut" }}
         style={{ transformStyle: "preserve-3d" }}
+        whileTap={{ scale: 0.995 }}
       >
-        <div className="absolute w-full h-full backface-hidden bg-white dark:bg-gray-900 border rounded-xl flex items-center justify-center p-6 text-xl font-semibold shadow">
+        <div className="absolute inset-0 flex items-center justify-center rounded-3xl border border-black/10 bg-white/80 p-8 text-center text-2xl leading-relaxed font-semibold text-zinc-900 shadow-sm backdrop-blur [backface-visibility:hidden] dark:border-white/10 dark:bg-black/50 dark:text-white">
           {question}
         </div>
 
         <div
-          className="absolute w-full h-full backface-hidden bg-blue-500 text-white border rounded-xl flex items-center justify-center p-6 text-lg shadow"
+          className="absolute inset-0 flex items-center justify-center rounded-3xl border border-sky-300/40 bg-gradient-to-br from-sky-500 to-violet-600 p-8 text-center text-xl leading-relaxed font-medium text-white shadow-md [backface-visibility:hidden]"
           style={{ transform: "rotateY(180deg)" }}
         >
           {answer}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

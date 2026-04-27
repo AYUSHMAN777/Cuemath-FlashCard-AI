@@ -9,17 +9,17 @@ export function ProgressBar({ current, total }: ProgressBarProps) {
   const percentage = (safeCurrent / safeTotal) * 100;
 
   return (
-    <div className="w-full max-w-xl mx-auto mb-4">
-      <div className="flex justify-between text-sm mb-1">
-        <span>Progress</span>
+    <div className="mx-auto mb-5 w-full max-w-2xl">
+      <div className="mb-1 flex justify-between text-sm text-zinc-600 dark:text-zinc-300">
+        <span className="font-medium">Progress</span>
         <span>
           {safeCurrent} / {safeTotal}
         </span>
       </div>
 
-      <div className="w-full bg-gray-200 dark:bg-zinc-800 h-2 rounded-full">
+      <div className="h-2 w-full rounded-full bg-zinc-200 dark:bg-zinc-800">
         <div
-          className="bg-blue-500 h-2 rounded-full transition-all"
+          className="h-2 rounded-full bg-gradient-to-r from-violet-600 via-sky-500 to-emerald-500 transition-all duration-500"
           style={{ width: `${percentage}%` }}
         />
       </div>

@@ -29,7 +29,7 @@ export async function GET(
 
   const { data: cards, error } = await supabase
     .from("flashcards")
-    .select("id, question, answer, difficulty")
+    .select("id, question, answer, difficulty, repetitions, interval, ease_factor")
     .eq("deck_id", id)
     .order("created_at", { ascending: true });
 
