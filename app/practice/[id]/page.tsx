@@ -173,7 +173,7 @@ export default function PracticePage() {
 
   if (completed) {
     return (
-      <div className="relative min-h-screen overflow-hidden px-4 py-10">
+      <div className="relative min-h-screen overflow-hidden px-4 py-8 sm:py-10">
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div className="absolute left-1/2 top-[-12rem] h-[28rem] w-[55rem] -translate-x-1/2 rounded-full bg-gradient-to-r from-emerald-500/20 via-sky-400/15 to-violet-400/15 blur-3xl" />
         </div>
@@ -196,8 +196,8 @@ export default function PracticePage() {
         </AnimatePresence>
 
         <div className="mx-auto flex min-h-[75vh] w-full max-w-2xl flex-col items-center justify-center">
-          <div className="w-full rounded-3xl border border-black/10 bg-white/80 p-10 text-center shadow-sm dark:border-white/10 dark:bg-black/40">
-            <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">Deck complete 🎉</h1>
+          <div className="w-full rounded-3xl border border-black/10 bg-white/80 p-6 text-center shadow-sm dark:border-white/10 dark:bg-black/40 sm:p-10">
+            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white sm:text-3xl">Deck complete 🎉</h1>
             <p className="mt-3 text-zinc-600 dark:text-zinc-300">You finished all flashcards in this deck.</p>
             {streakValue !== null ? (
               <p className="mt-2 text-sm font-medium text-emerald-600 dark:text-emerald-400">
@@ -220,7 +220,7 @@ export default function PracticePage() {
 
 
   return (
-    <div className="relative min-h-screen overflow-hidden px-4 py-10">
+    <div className="relative min-h-screen overflow-hidden px-4 py-8 sm:py-10">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-[-12rem] h-[28rem] w-[55rem] -translate-x-1/2 rounded-full bg-gradient-to-r from-violet-500/20 via-sky-400/15 to-emerald-400/10 blur-3xl" />
       </div>
@@ -245,10 +245,10 @@ export default function PracticePage() {
           </motion.div>
         </AnimatePresence>
 
-        <div className="mt-5 flex items-center justify-between">
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
           <button
             onClick={() => setFlipped((v) => !v)}
-            className="rounded-xl border border-black/10 bg-white/70 px-4 py-2 text-sm text-zinc-700 shadow-sm transition hover:bg-white disabled:opacity-50 dark:border-white/10 dark:bg-black/40 dark:text-zinc-300 dark:hover:bg-black/50"
+            className="rounded-xl border border-black/10 bg-white/70 px-4 py-3 text-sm text-zinc-700 shadow-sm transition hover:bg-white disabled:opacity-50 dark:border-white/10 dark:bg-black/40 dark:text-zinc-300 dark:hover:bg-black/50"
             disabled={loading || transitioning}
           >
             {flipped ? "Show Question" : "Show Answer"}
@@ -256,7 +256,7 @@ export default function PracticePage() {
 
           <button
             onClick={goNext}
-            className="rounded-xl border border-black/10 bg-white/70 px-4 py-2 text-sm text-zinc-700 shadow-sm transition hover:bg-white disabled:opacity-50 dark:border-white/10 dark:bg-black/40 dark:text-zinc-300 dark:hover:bg-black/50"
+            className="rounded-xl border border-black/10 bg-white/70 px-4 py-3 text-sm text-zinc-700 shadow-sm transition hover:bg-white disabled:opacity-50 dark:border-white/10 dark:bg-black/40 dark:text-zinc-300 dark:hover:bg-black/50"
             disabled={loading || transitioning || index >= cards.length - 1}
           >
             Next
@@ -279,8 +279,11 @@ export default function PracticePage() {
           ) : null}
         </AnimatePresence>
 
-        <p className="mt-4 text-center text-xs text-zinc-500 dark:text-zinc-400">
-          1=Again 😵, 2=Hard 🤔, 3=Good 🙂, 4=Easy 😎
+        <p className="mt-4 text-center text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+          Click the card to flip, then rate it with your keyboard.
+          <span className="block">
+            1=Again 😵, 2=Hard 🤔, 3=Good 🙂, 4=Easy 😎
+          </span>
         </p>
       </div>
     </div>

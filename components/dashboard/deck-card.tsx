@@ -29,7 +29,7 @@ export function DeckCard({ deck }: DeckCardProps) {
           <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.15 }}>
             <Card className="rounded-3xl bg-transparent ring-0 shadow-none">
               <CardHeader className="gap-1">
-                <CardTitle className="line-clamp-1 text-base font-semibold text-zinc-900 dark:text-white">
+                <CardTitle className="line-clamp-2 break-words text-base font-semibold text-zinc-900 dark:text-white">
                   {deck.title}
                 </CardTitle>
                 <CardDescription>
@@ -56,8 +56,8 @@ export function DeckCard({ deck }: DeckCardProps) {
                 </div>
               </CardContent>
 
-              <CardFooter className="gap-2">
-                <Button asChild variant="outline" className="flex-1 rounded-2xl">
+              <CardFooter className="flex-col gap-2 sm:flex-row">
+                <Button asChild variant="outline" className="w-full flex-1 rounded-2xl">
                   <Link href={`/deck/${deck.id}`}>
                     <Eye className="mr-2 size-4" />
                     View
@@ -65,7 +65,7 @@ export function DeckCard({ deck }: DeckCardProps) {
                 </Button>
                 <Button
                   asChild
-                  className="flex-1 rounded-2xl bg-gradient-to-r from-violet-600 via-sky-500 to-emerald-500 text-white hover:opacity-95"
+                  className="w-full flex-1 rounded-2xl bg-gradient-to-r from-violet-600 via-sky-500 to-emerald-500 text-white hover:opacity-95"
                 >
                   <Link href={`/practice/${deck.id}`}>
                     <Play className="mr-2 size-4" />

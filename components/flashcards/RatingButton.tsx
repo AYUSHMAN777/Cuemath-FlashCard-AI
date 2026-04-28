@@ -23,15 +23,18 @@ export function RatingButtons({ onRate, disabled }: RatingButtonsProps) {
   ];
 
   return (
-    <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+    <div className="mt-6 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:grid-cols-4">
       {ratingOptions.map((option) => (
         <motion.div key={option.rating} whileTap={{ scale: 0.96 }} whileHover={{ y: -2 }}>
           <Button
-            className={`h-12 w-full text-white shadow-sm ${option.className}`}
+            className={`h-12 w-full justify-between px-3 text-white shadow-sm ${option.className}`}
             onClick={() => onRate(option.rating)}
             disabled={disabled}
           >
-            <span className="mr-1">{option.emoji}</span> {option.label}
+            <span className="flex items-center gap-2">
+              <span>{option.emoji}</span>
+              <span>{option.label}</span>
+            </span>
             <span className="ml-2 rounded-md bg-black/15 px-1.5 py-0.5 text-[10px]">{option.key}</span>
           </Button>
         </motion.div>

@@ -1,38 +1,76 @@
+ "use client";
+
+import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Brain, Clock3, Sparkles } from "lucide-react";
+import { ArrowRight, Brain, Clock3, Menu, Sparkles, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DueTodayNotice } from "@/components/home/due-today-notice";
 import { MarketingAuthButtons } from "@/components/marketing/marketing-auth-buttons";
 import { StreakBadge } from "@/components/streak/streak-badge";
 
 export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navLinks = [
+    { href: "#features", label: "Features" },
+    { href: "#how", label: "How it works" },
+    { href: "#pricing", label: "Get Started" },
+  ];
+
   return (
     <div className="flex-1">
+      <DueTodayNotice />
       <header className="sticky top-0 z-40 border-b border-black/5 bg-white/70 backdrop-blur dark:border-white/10 dark:bg-black/40">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-violet-600 to-sky-500 text-white shadow-sm">
+        <div className="mx-auto flex w-full max-w-6xl items-center gap-3 px-4 py-3 sm:px-6 sm:py-4">
+          <Link href="/" className="min-w-0 flex items-center gap-2">
+            <div className="grid size-9 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-violet-600 to-sky-500 text-white shadow-sm">
               <Sparkles className="size-4" />
             </div>
-            <span className="text-sm font-semibold tracking-tight">Flashcard AI</span>
+            <span className="truncate text-sm font-semibold tracking-tight">Cuemath FlashCard AI</span>
           </Link>
 
-          <nav className="hidden items-center gap-8 text-sm text-zinc-600 dark:text-zinc-300 md:flex">
-            <a href="#features" className="hover:text-zinc-900 dark:hover:text-white">
-              Features
-            </a>
-            <a href="#how" className="hover:text-zinc-900 dark:hover:text-white">
-              How it works
-            </a>
-            <a href="#pricing" className="hover:text-zinc-900 dark:hover:text-white">
-              Get Started
-            </a>
-          </nav>
+          <div className="hidden flex-1 justify-center md:flex">
+            <nav className="flex items-center gap-8 text-sm text-zinc-600 dark:text-zinc-300">
+              {navLinks.map((link) => (
+                <a key={link.href} href={link.href} className="hover:text-zinc-900 dark:hover:text-white">
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+          </div>
 
-          <div className="flex items-center gap-3">
+          <div className="ml-auto flex items-center gap-2 sm:gap-3">
             <StreakBadge />
             <MarketingAuthButtons />
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={() => setMenuOpen((open) => !open)}
+              aria-expanded={menuOpen}
+              aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+            >
+              {menuOpen ? <X className="size-4" /> : <Menu className="size-4" />}
+            </Button>
           </div>
         </div>
+
+        {menuOpen ? (
+          <div className="border-t border-black/5 bg-white/95 px-4 py-4 shadow-sm backdrop-blur dark:border-white/10 dark:bg-black/90 md:hidden">
+            <div className="mx-auto flex w-full max-w-6xl flex-col gap-2">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="rounded-2xl border border-black/10 bg-white/70 px-4 py-3 text-sm font-medium text-zinc-800 transition hover:bg-zinc-50 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100 dark:hover:bg-white/10"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : null}
       </header>
 
       <main>
@@ -42,7 +80,7 @@ export default function Home() {
             <div className="absolute bottom-[-14rem] left-1/2 h-[28rem] w-[55rem] -translate-x-1/2 rounded-full bg-gradient-to-r from-amber-300/10 via-fuchsia-400/15 to-violet-500/15 blur-3xl" />
           </div>
 
-          <div className="mx-auto w-full max-w-6xl px-6 py-16 sm:py-24">
+          <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
             <div className="mx-auto max-w-3xl text-center">
               <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/60 px-3 py-1 text-xs text-zinc-700 shadow-sm backdrop-blur dark:border-white/10 dark:bg-black/40 dark:text-zinc-200">
                 <span className="font-medium">New</span>
@@ -68,7 +106,7 @@ export default function Home() {
                   className="h-11 px-6 bg-gradient-to-r from-violet-600 via-sky-500 to-emerald-500 text-white shadow-sm hover:-translate-y-px hover:opacity-95"
                 >
                   <Link href="/upload">
-                    Create your first deck <ArrowRight className="ml-2 size-4" />
+                    Create your deck <ArrowRight className="ml-2 size-4" />
                   </Link>
                 </Button>
                 <Button asChild variant="outline" className="h-11 px-6">
@@ -109,7 +147,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="features" className="mx-auto w-full max-w-6xl scroll-mt-24 px-6 py-16">
+        <section id="features" className="mx-auto w-full max-w-6xl scroll-mt-24 px-4 py-16 sm:px-6">
           <div className="flex items-end justify-between gap-6">
             <div className="max-w-2xl">
               <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white sm:text-3xl">
@@ -160,7 +198,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="how" className="mx-auto w-full max-w-6xl scroll-mt-24 px-6 py-16">
+        <section id="how" className="mx-auto w-full max-w-6xl scroll-mt-24 px-4 py-16 sm:px-6">
           <div className="grid gap-10 md:grid-cols-2 md:items-center">
             <div>
               <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white sm:text-3xl">
@@ -206,7 +244,7 @@ export default function Home() {
 
         <section
           id="pricing"
-          className="mx-auto w-full max-w-6xl scroll-mt-24 px-6 py-16"
+          className="mx-auto w-full max-w-6xl scroll-mt-24 px-4 py-16 sm:px-6"
           aria-label="Premium call to action"
         >
           <div className="relative overflow-hidden rounded-[2rem] border border-black/10 bg-white p-8 shadow-sm dark:border-white/10 dark:bg-black/40 sm:p-12">
@@ -240,12 +278,12 @@ export default function Home() {
         </section>
 
         <footer className="border-t border-black/5 py-10 dark:border-white/10">
-          <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-6 text-sm text-zinc-600 dark:text-zinc-400 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 text-sm text-zinc-600 dark:text-zinc-400 sm:flex-row sm:items-center sm:justify-between sm:px-6">
             <div className="flex items-center gap-2">
               <div className="grid size-8 place-items-center rounded-xl bg-gradient-to-br from-violet-600 to-sky-500 text-white shadow-sm">
                 <Sparkles className="size-4" />
               </div>
-              <span>© {new Date().getFullYear()} Flashcard AI</span>
+              <span>© {new Date().getFullYear()} Cuemath FlashCard AI</span>
             </div>
             <div className="flex items-center gap-6">
               <a className="hover:text-zinc-900 dark:hover:text-white" href="#features">
