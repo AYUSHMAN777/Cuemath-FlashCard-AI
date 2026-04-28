@@ -18,7 +18,9 @@ export default function Home() {
 
   return (
     <div className="flex-1">
-      <DueTodayNotice />
+      <div className="hidden md:block">
+        <DueTodayNotice />
+      </div>
       <header className="sticky top-0 z-40 border-b border-black/5 bg-white/70 backdrop-blur dark:border-white/10 dark:bg-black/40">
         <div className="mx-auto flex w-full max-w-6xl items-center gap-3 px-4 py-3 sm:px-6 sm:py-4">
           <Link href="/" className="min-w-0 flex items-center gap-2">
